@@ -109,7 +109,7 @@ func main() {
 	}
 
 	// 启动服务器
-	log.Printf("服务器启动在端口 %s", cfg.Server.Port)
+
 	if err := r.Run(":" + cfg.Server.Port); err != nil {
 		log.Fatal("服务器启动失败:", err)
 	}
