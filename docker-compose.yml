@@ -1,0 +1,78 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+
+services:
+  # ============================
+  # MySQL 数据库
+  # ============================
+  mysql:
+    image: mysql:8.0
+    container_name: mcm-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: lgroot
+      MYSQL_DATABASE: mac_cluster_monitor
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - mcm-network
+
+  # ============================
+  # Go 后端
+  # ============================
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: mcm-server
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_USER: root
+      DB_PASSWORD: lgroot
+      DB_NAME: mac_cluster_monitor
+      SERVER_PORT: "8080"
+      JWT_SECRET: your-jwt-secret-change-me
+    ports:
+      - "8080:8080"
+    networks:
+      - mcm-network
+
+  # ============================
+  # Vue 前端 + Nginx
+  # ============================
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: mcm-web
+    restart: always
+    depends_on:
+      - server
+    ports:
+      - "80:80"
+    networks:
+      - mcm-network
+
+networks:
+  mcm-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

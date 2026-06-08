@@ -120,7 +120,35 @@ func LoadFromEnv() (*Config, error) {
 		}
 	}
 
-	return Load(configPath)
+	cfg, err := Load(configPath)
+	if err != nil {
+		return nil, err
+	}
+
+	// 环境变量覆盖（Docker部署时使用）
+	if v := os.Getenv("DB_HOST"); v != "" {
+		cfg.Database.Host = v
+	}
+	if v := os.Getenv("DB_PORT"); v != "" {
+		cfg.Database.Port = v
+	}
+	if v := os.Getenv("DB_USER"); v != "" {
+		cfg.Database.User = v
+	}
+	if v := os.Getenv("DB_PASSWORD"); v != "" {
+		cfg.Database.Password = v
+	}
+	if v := os.Getenv("DB_NAME"); v != "" {
+		cfg.Database.Name = v
+	}
+	if v := os.Getenv("SERVER_PORT"); v != "" {
+		cfg.Server.Port = v
+	}
+	if v := os.Getenv("JWT_SECRET"); v != "" {
+		cfg.JWT.Secret = v
+	}
+
+	return cfg, nil
 }
 
 // DSN 生成MySQL连接字符串
