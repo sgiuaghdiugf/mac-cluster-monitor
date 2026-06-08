@@ -1,0 +1,39 @@
+# ============================================
+# Mac Cluster Monitor - 服务端本地开发配置
+# ============================================
+
+# 服务器配置
+server:
+  port: "8080"                    # 服务端口
+  mode: "debug"                   # 运行模式: debug/release
+
+# 数据库配置
+database:
+  host: "localhost"               # 数据库主机
+  port: "3306"                    # 数据库端口
+  user: "root"                    # 数据库用户名
+  password: "root"             # 数据库密码
+  name: "mac_cluster_monitor"     # 数据库名
+  max_open_conns: 25              # 最大连接数
+  max_idle_conns: 10              # 最大空闲连接数
+
+# JWT配置
+jwt:
+  secret: "local-dev-secret-key"  # JWT密钥 (生产环境请使用强密码)
+  expire_hours: 24                # Token过期时间(小时)
+
+# 监控配置
+monitor:
+  offline_threshold: 10           # 离线阈值(秒),超过此时间未收到心跳认为离线
+  check_interval: 5               # 离线检查间隔(秒)
+
+# 盈利模拟配置
+profit:
+  initial_value: 0.0              # 初始盈利值
+  increment: 0.5                  # 每次增加的盈利金额
+  interval: 5                     # 增加间隔(秒)
+
+# 日志配置
+log:
+  level: "debug"                  # 日志级别: debug/info/warn/error
+  format: "text"                  # 日志格式: text/json

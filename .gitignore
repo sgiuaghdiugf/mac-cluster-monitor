@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build output
+dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go
+server/*.exe
+agent/*.exe
+server/agent
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Debug
+__debug_bin*

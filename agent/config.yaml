@@ -1,0 +1,25 @@
+# ============================================
+# Mac Cluster Monitor - Agent本地开发配置
+# ============================================
+
+# 监控服务器配置
+server:
+  url: "http://192.168.109.106:8080"    # 监控服务器地址
+  heartbeat_interval: 5           # 心跳上报间隔(秒)
+  timeout: 10                     # 请求超时时间(秒)
+
+# 设备配置
+device:
+  # 设备名称留空则自动获取系统主机名
+  # name: "mac-mini-01"
+  
+  # 设备ID留空则自动使用MAC地址
+  # id: ""
+  
+  # 指定网卡接口 (留空自动选择)
+  # interface: "en0"
+
+# 日志配置
+log:
+  level: "debug"                  # 日志级别: debug/info/warn/error
+  file: "/var/log/mac-monitor-agent.log"  # 日志文件路径
