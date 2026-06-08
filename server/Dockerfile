@@ -8,7 +8,7 @@ RUN go mod download
 
 # 复制源码并编译
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o server ./...
+RUN CGO_ENABLED=0 GOOS=linux go build -o server .
 
 # 运行阶段
 FROM alpine:3.20
